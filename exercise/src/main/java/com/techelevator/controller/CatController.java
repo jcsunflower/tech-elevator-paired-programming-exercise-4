@@ -36,10 +36,14 @@ public class CatController {
     public CatCard getCatCard(@PathVariable int id) {
         return this.catCardDao.get(id);
     }
-//
-//    @RequestMapping(path = "/api/cards/random", method = RequestMethod.GET)
-//    public CatCard getRandomCatCard() {
-//        CatCard randomCatCard = RestCatFactService.getFact(
-//    }
+
+    @RequestMapping(path = "/api/cards/random", method = RequestMethod.GET)
+    public CatCard getRandomCatCard() {
+        CatCard randomCatCard = new CatCard();
+        randomCatCard.setCatFact(catFactService.getFact().getText());
+        randomCatCard.setImgUrl(catPicService.getPic().getFile());
+
+        return randomCatCard;
+    }
 
 }
