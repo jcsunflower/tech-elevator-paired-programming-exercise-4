@@ -45,20 +45,4 @@ public class CatController {
 
     }
 
-    @RequestMapping(path = "/api/cards", method = RequestMethod.POST)
-    public boolean saveCatCard(@RequestBody CatCard newCatCard) {
-        return this.catCardDao.save(newCatCard);
-    }
-
-    @RequestMapping(path = "/api/cards/{id}", method = RequestMethod.PUT)
-    public boolean updateCatCard(@RequestBody CatCard catCard, @PathVariable int id) {
-        return this.catCardDao.update(id, catCard);
-    }
-
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @RequestMapping(path = "/api/cards/{id}", method = RequestMethod.DELETE)
-    public void deleteCatCard(@PathVariable int id) {
-        this.catCardDao.delete(id);
-    }
-
 }
