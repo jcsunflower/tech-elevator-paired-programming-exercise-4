@@ -2,15 +2,13 @@ package com.techelevator.controller;
 
 import com.techelevator.dao.CatCardDao;
 import com.techelevator.model.CatCard;
+import com.techelevator.model.CatFact;
+import com.techelevator.model.CatPic;
 import com.techelevator.services.CatFactService;
 import com.techelevator.services.CatPicService;
-import com.techelevator.services.RestCatFactService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,10 +34,31 @@ public class CatController {
     public CatCard getCatCard(@PathVariable int id) {
         return this.catCardDao.get(id);
     }
-//
-//    @RequestMapping(path = "/api/cards/random", method = RequestMethod.GET)
-//    public CatCard getRandomCatCard() {
-//        CatCard randomCatCard = RestCatFactService.getFact(
-//    }
+
+    @RequestMapping(path = "/api/cards/random", method = RequestMethod.GET)
+    public CatCard getRandomCatCard() {
+        CatCard randomCatCard = new CatCard();
+        randomCatCard.setCatFact(catFactService.getFact().getText());
+        randomCatCard.setImgUrl(catPicService.getPic().getFile());
+
+        return randomCatCard;
+
+    }
+
+    @RequestMapping(path = "/api/cards", method = RequestMethod.POST)
+    public boolean saveCatCard(@RequestBody CatCard newCatCard) {
+        return this.catCardDao.save(newCatCard);
+    }
+
+    @RequestMapping(path = "/api/cards/{id}", method = RequestMethod.PUT)
+    public boolean updateCatCard(@RequestBody CatCard catCard, @PathVariable int id) {
+        return this.catCardDao.update(id, catCard);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequestMapping(path = "/api/cards/{id}", method = RequestMethod.DELETE)
+    public void deleteCatCard(@PathVariable int id) {
+        this.catCardDao.delete(id);
+    }
 
 }
